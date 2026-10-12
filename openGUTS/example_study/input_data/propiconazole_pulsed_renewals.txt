@@ -1,0 +1,32 @@
+Data set B of the GUTS ring test. Real data for propiconazole in Gammarus pulex from Nyman et al  (2012). Ecotoxicology 21, 1828-1840. Note that the definition of the pulses here is adapted to demonstrate an alternative specification: as immediate changes from one exposure situation to the next, by having two entries for a time point.
+Survival time [d]	Control	pulses close	pulses wide	constant
+0	60	70	70	70
+1	59	50	57	70
+2	58	49	53	69
+3	58	49	52	69
+4	57	45	50	68
+5	57	45	46	66
+6	56	45	45	65
+7	56	42	44	64
+8	56	38	40	60
+9	55	37	38	55
+10	54	36	37	54
+Concentration unit:	uM			
+Concentration time [d]	Control	pulses close	pulses wide	constant
+0	0	30.56	28.98	4.93
+1	0	27.93	27.66	4.69
+1	0	0	0	4.69
+2	0	0.26	0.27	4.58
+3	0	0.21	0.26	4.58
+3	0	27.69	0.26	4.58
+4	0	26.49	0.26	4.54
+4	0	0	0.26	4.54
+5	0	0.18	0.25	4.58
+5	0	0.18	0.25	4.71
+6	0	0.18	0.03	4.71
+7	0	0.14	0	4.6
+7	0	0.14	26.98	4.6
+8	0	0.18	26.28	4.59
+8	0	0.18	0	4.59
+9	0	0	0.12	4.46
+10	0	0	0.12	4.51

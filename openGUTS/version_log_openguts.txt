@@ -1,0 +1,73 @@
+===== Version log openGUTS Matlab version (previously 'prototype') =====
+Downloaded from: http://openguts.info/download.html
+
+Version 0.5 (Date 16/05/2019)
+
+- This is a 'beta' release of the prototype, and the first version to be released to a broader audience. It is fully functional, and thoroughly tested (see also ring-test results on the download page), but may still containt some bugs and/or errors. As far as we can tell, it provides exactly the same output as the current test version of the standalone version. So when the standalone is subjected to extensive testing (second half of 2019), this may throw up errors that also affect the prototype. If you worry about this, make sure to register to be warned in case of errors (see download page). If you are interested in the changes that occurred to earlier version than this one, contact Tjalling Jager).
+
+Version 0.6 (Date 23/05/2019)
+
+- This is a tiny update, mainly because I now have the go on including the exposure profiles used in the EFSA scientific opinion in the distribution.
+- In <calc_parspace> (Line 60) added a switch <plot_intermed> to plot or suppress the intermediate figures from parameter space. Plotting them is great to monitor progress. However, each plot command brings the figure window to the front, so it is annoying if you are trying to work on your PC at the same time. By default, it is on.
+- Changed the heading in the file-input GUI window for the predictions, to show whether we are loading data for batch predictions or test-design predictions.
+
+Version 0.7 (Date 12/07/2019)
+
+- In exceptional cases, the optimisation routine claims that it will go into extra sampling because of gaps after profiling, without actually performing any extra sampling. There is a pruning step in <calc_parspace> which may judge that all gaps are in a location where we don't need to care about them. The warning to screen in now suppressed in such cases.
+- The new simplex routine <nelmin> has problems when no parameters are fitted. This happens when the user sets all parameters to 'no fitting', but also when one parameter is fitted (when making a profile likelihood). This is now caught in <setup_simplex>.
+- When fitting only a single parameter, and extra sampling is triggered, this could produce an error in <calc_parspace> in BLOCK 6.1. (in extreme cases). This is solved by modifying the construction of <coll_ok> within the <if> statement (taking the <min> of the original value and the length of <coll_all>).
+- Replaced the progress information on screen (the percentage of the sample finished, for the CI calculations) by the built-in Matlab progress bar with <waitbar>. This looks better, but also allows the possibility of including a cancel button. The action of that button is now set to stop the calculations, but to display the results with CIs from the sets analysed so far. This will usually still provide a good indication of the width of the CIs. This required some code changes in different functions.
+- Corrected a silly mistake in <prepare_data> BLOCK 3.2., which made a check on the time vector for the survival data fail (brackets placed incorrectly). This implies that an error was not produced when it should have been produced (and likely produces a more cryptical Matlab error elsewhere).
+- Modified the code to provide message boxes on errors rather than the standard Matlab error messages in the command window. To make this work better, the call to <prepare_data> in the main script is now moved to <load_data>. This is possible as <prepare_data> is only called from <load_data>. I also took the opportunity to streamline the call to <load_data> and <calc_batch_lpx> by placing the <filepath> after the <filename>. 
+- The directory <output_report> will now contain sub-folders with the name of the study. This makes it easier to organise the output (all files for all analyses into one folder will become a mess). This required modification of the lines of code that deal with saving plots and with printing output into the diary (the .out file).
+
+Version 0.8 (Date 4/11/2019)
+
+- When multiple data sets are entered for calibration, the starting values were derived from the first data set only (rather than the widest ranges suggested from all data sets). This will be corrected in the next version (the standalone does not have this error).
+- When entering a data set with only a survival data point at t=0, <plot_main> produces an error as it cannot plot the predicted-observed plot (which excludes t=0). This is a rather silly situation, since there is no information in the data set anyway. Code was added in BLOCK 2.1 to catch this.
+- In very extreme cases, profiling may find a much better optimum which leaves no points in the cloud (apart from the new best value). This produces an error as it will not be possible to calculate <d_grid>. This will be rare, but it now produces an informative error message in <calc_parspace>. Also if additional sampling rounds cannot fill the inner rim, an informative error is produced (after 20 extra rounds). These errors mean that the optimisation is not finished. However, the current-best parameter estimates are displayed and you are requested to seek expert assistance to fit (and interpret) this data set.
+- Linked to the previous point, added a check in <plot_grid> to see if the pruned profile likelihood is empty. This occurs in very extreme cases, when profiling does not see a global minimum but subsequent simplex optimisation does. This situation will then later trigger the informative error message explained in the previous point.
+- In some cases, the optimisation for IT struggles with fits for <Fs> very close to 1 (which implies no differences between individuals). The fits resulting have a very low loglik but are generally unrealistic. For this reason, the min range for <Fs> is now set to 1.05 (also in the standalone software).
+- Figures were popping up during batch calculations where they should have been invisible. This is solved in <plot_main>.
+- Batch calculation of LPx is extended with the option to calculate CIs on the LPx values as well. This can be very time consuming, so an option is implemented to use a sub-sample from the outer rim of parameter space. See the line for <GLO.n_lim> in BLOCK 6.2 of the main script. Using a sub-sample speeds up the calculations, at the expense of underestimating the width of the CI. This underestimation will be worse with smaller sub-samples, and when sampling was problematic (e.g., when a large part of parameter space was only filled after extra sampling rounds).
+- Slightly extended the comments in the main script and in <calc_batch_lpx> to make the code clearer.
+- Modified <calc_batch_lpx> BLOCK 3 to have flexibility for sorting of the LPx values. By default, sorting is on LP50, but this can now be easily changed to LP10 in this function.
+- The sample for parameter space is now randomly shuffled before calculating CIs for LPx (both CIs on LPx and CIs on the model curves at the LPx). This means that a more meaningful CI is produced when the user presses cancel in the wait bar (the saved sample in the MAT file is sorted by log-likelihood of the fit).
+
+Version 1.0 (Date 10/12/2019)
+
+- This version will now no longer be called 'prototype' but simply the openGUTS Matlab version. It has the same functionality as the standalone (apart from the GUI), and produces the same model output. The script folder name is also changed to 'example_study' to reflect that more folders can be added if needed.
+- Small changes to number formatting for plotting on screen (loglik and AIC with 2 digits behind the decimal point, fitted parameters with 4 sign. digits and trailing zeros, but fixed parameters without trailing zeros).
+- Added the possibility to change the format of the saved plots. Default is still PDF, but other options can be selected by modifying <GLO.save_format> in <initial_setup.m>.
+- Added an additional script file <openguts_batch> to demonstrate how the <openguts.m> script can be modified to perform only a specific analysis (batch calculations for a previously saved MAT file).
+
+Version 1.1 (Date 26/05/2020)
+
+- The IT calculations for time-varying exposure contain a rather serious error. Fortunately, for most practical (risk assessment) applications, the consequences will be minor. The main issue is with IT calibration/predictions for cases where the exposure concentration decreases linearly over a somewhat extended period of time. A document is provided that explains this error in more detail. It is repaired in this Matlab version. New code in <calc_model>, BLOCK 1 marked by 'NEW after v.1.0', and in <calc_lpx>, BLOCK 3.2 (also marked in same manner).
+- The optimised profile-likelihood points (that are used for the profile curves) are also added to the total sample. However, this is NOT reflected in the status of the sample printed on screen, which therefore shows a somewhat smaller sample size than what is actuall used (and saved in the MAT file). New code in <calc_parspace> BLOCK 8 marked by 'NEW after v.1.0'.
+- In very extreme cases, profiling may find a much better optimum which leaves no points in the cloud (apart from the new best value). This produces an informative error in BLOCK 6.1. However, this may not be necessary, as long as coll_ok contains some good points. However, edges_cloud would then need to be calculated based on coll_all AND coll_ok. This is already implemented in the BYOM version of the algorithm, but not in openGUTS just yet (as it is unclear whether this occurs in practice, and, in general, such cases would need specialist attention).
+- The goodness-of-fit measures NSE and NRMSE are calculated without the results at t=0, since these are perfectly fitted anyway. However, the response at t=0 affects the mean survival, which is used in these statistics as well. Excluding t=0 can lead to unreasonably poor NSE when survival changes substantially between t=0 and the first observation time point. Therefore, it is probably best to include t=0. In the next update, both versions of these statistics will be shown on screen. New code in <plot_main>, BLOCK 2.5 marked by 'NEW after v.1.0'.
+- Small trick in <make_fig> to make sure that normal sized figures are created when an analysis is run in batch mode with Matlab's parallel toolbox. This does not work 100%.
+
+Version 1.1a (Date 06/04/2023)
+
+- Slight modification to <pathdefine.m>. The new version will remove any BYOM/engine element from the path. This is handy for people that use both openGUTS and BYOM, so they don't have to clear the path when they switch. Similarly, BYOM will remove the openGUTS engine from the path.
+- With Matlab R2023a, it is apparently no longer allowed to use separate name and value arrays directly in functions such as <ylabel>. It throws an error on those calls. The solution was to change all calls throughout openGUTS to, e.g., <h=ylabel(...)> followed <set(h,ft.name,ft.label)>. The <set> function does accommodate separate arrays. This functionality could use a bit more scrutiny in the future, but for now it should work properly. 
+- The Matlab editor warns about potential problems by placing a reddish marker next to the scroll bar in the editor window. I tried to remove these warnings by pre-initialising some parameters, or by suppressing the error with a code (e.g., %#ok<AGROW> when there is no problem in Matlab when an array grows). In some cases, a function was called with requesting an output, where the output was not used (e.g., a handle for an object). Unused output removed, which removes the warning. I also changed the use of <clock> and <date> to provide the date and time in the analysis output by the recommended <datetime> in <calc_optim> and <calc_parspace>. Further, <contains> is now used instead of a rather awkward formulation of <strfind> in <load_data> and <pathdefine>. As a result, this new version will not work in versions older than Matlab 2016b anymore (but v1.1 will still work with R2014b-R2022b).
+- Repaired a small glitch in <prepare_data>: the check for non-strictly increasing time vectors did not produce an informative error here when it would need to.
+- Removed some commented-out code from v1.0 and before that is not relevant/helpful anymore.
+
+Version 1.2 (Date 20/03/2024)
+
+- EFSA's 2023 bee guidance requires GUTS to be used for prediction of LCx (or LDx) after 10, 27 and 182 days. However, these time points were not, by default, generated by openGUTS. The standalone and Matlab versions 1.2 now automatically generate these additional time points as well. For users of the Matlab version, it is easy to modify the time points for LCx to your needs. In the engine folder, there is the function initial_setup.m. In Block 4 of the code (Line 159), the vector SETTINGS_PRED.T_LCx is defined, which represents the time points at which LCx are calculated. This can be modified in any way that you like, just adding or removing time points in there.
+- The openGUTS standalone displays LCx data with 4 significant digits while the Matlab version shows 3. I think 3 is, strictly speaking, better as the accuracy of this analysis should not be exaggerated. However, it is good to harmonise this, so the Matlab version now also provides 4 digits. Note that LPx was already displayed with 4 digits in both versions.
+
+Archiving in GitHub (October 2026)
+
+- The last version 1.2 of 20 March 2024 is now archived at GitHub at https://github.com/TJ-debtox/openguts_archive/ This involved no changes whatsoever to the code. Only for the third-party functions (nelmin.m, sec2hms.m and zero.m) tiny changes to the comments in the headers to separate my added comments from the original headers.
+
+===========================================
+Errors spotted and changes that will be corrected/implemented in the NEXT version:
+
+- ...
+
