@@ -69,5 +69,7 @@ Archiving in GitHub (October 2026)
 ===========================================
 Errors spotted and changes that will be corrected/implemented in the NEXT version:
 
+- In startgrid.m, Line 143, the comment was incorrect: lowest exposure must be highest exposure. The reasoning behind this limit can be found in the technical design/background document, Page 28-30. The calculations are correct.
+- Note: don't use a period/fullstop in the name used for identifying the analysis in your main file (GLO.basenm). This causes problems in Matlab when trying to save the analysis results in a .mat file. There may be other symbols that cause such issues as well.
 - ...
 
