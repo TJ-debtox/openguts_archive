@@ -22,6 +22,10 @@ The openGUTS project as a whole is licensed under the **GNU General Public Licen
 
 The Matlab code for openGUTS versions 1-1.2 has been written by Tjalling Jager (DEBtox Research). Exceptions are the third-party functions listed below, where the original authors are identified in the file header.
 
+### Funding
+
+Version 1.0 of the software was funded by Cefic-LRI through the project ECO39.2. Version 1.1 and 1.2 were funded by Syngenta Crop Protection AG. 
+
 ### Third-party licenses
 
 Please note that that the third-party engine functions nelmin.m and zero.m are licensed under the GNU LGPL license, and the function sec2hms.m under an MIT license. Each third-party file retains its original author's copyright headers including specific license information. Modifications to the code are noted in the comments of these files.
@@ -30,13 +34,13 @@ Please note that that the third-party engine functions nelmin.m and zero.m are l
 
 OpenGUTS is the implementation of the General Unified Threshold model for Survival (GUTS) into software. GUTS is a toxicokinetic-toxicodynamic (TKTD) model for the endpoint survival. For more information, see the supporting web site (see link below).
 
-OpenGUTS is available as a freely-downloadable, open source, standalone for Windows, and as a set of Matlab scripts and functions. This repository is for the Matlab version. The standalone version and contains the Windows installer and C++ source code can be found at [https://github.com/TJ-debtox/openguts_standalone/](https://github.com/TJ-debtox/openguts_standalone/).
+OpenGUTS is available as a freely-downloadable, open source, standalone for Windows, and as a set of Matlab scripts and functions. This repository is for the Matlab version. The separate repository for the standalone version contains the Windows installer and C++ source code, and can be found at [https://github.com/TJ-debtox/openguts_standalone/](https://github.com/TJ-debtox/openguts_standalone/).
 
 The Matlab version has the same functionality as the standalone version, but lacks the user interface and the option to make formatted output reports. Both versions are able to use the same input files for the data sets and the exposure profiles. The Matlab version will be handy as a platform for modification and experimentation. Furthermore, since the Matlab version was originally developed as prototype for the C++ source code, both follow the same structure, and the Matlab version can be used for future development of the software. 
 
 ### About this archive
 
-As of 1 December 2026, I (Tjalling Jager) have retired my business DEBtox Research. This archive on GitHub contains the last release that I have contributed to: version 1.2 of 20 March 2024. Future updates will be hosted elsewhere (see supporting website for the latest version and the correct download link).
+As of 1 December 2026, I (Tjalling Jager) have retired my business DEBtox Research. I also maintain the [website for openGUTS](https://www.openguts.info/). The website remains in the air, but the software was moved to GitHub. This archive on GitHub contains the last release that I have contributed to: version 1.2 of 20 March 2024. Future updates will be hosted elsewhere (see supporting website for the latest version and the correct download link).
 
 ### Supporting web site
 
